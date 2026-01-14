@@ -144,30 +144,34 @@ tl2.from(".elem.right2", {
 }, "rg");
 
 // -----------------------masti-----------------------------
-var initialPath = `M 10 100 Q 500 100 990 100`
-var finalPath   = `M 10 100 Q 500 100 990 100`
+// ── STRING / MOUSE FOLLOW PATH ───────────────────────────
+const string = document.querySelector("#string");
+const path = document.querySelector("#string svg path");
 
-var string = document.querySelector("#string")
-var path = document.querySelector("svg path")
+let initialPath = `M 10 150 Q 500 150 990 150`;
+let finalPath = initialPath;
 
-string.addEventListener("mousemove", function (e) {
-    var newPath = `M 10 100 Q 500 ${e.y} 990 100`
+string.addEventListener("mousemove", (e) => {
+    // Get relative Y position inside the string container
+    const rect = string.getBoundingClientRect();
+    const relativeY = e.clientY - rect.top;
+
+    let newPath = `M 10 150 Q 500 ${relativeY} 990 150`;
 
     gsap.to(path, {
         attr: { d: newPath },
         duration: 0.3,
-        ease: "power3.out"// easing
-    })
-})
+        ease: "power3.out"
+    });
+});
 
-string.addEventListener("mouseleave", function () {
+string.addEventListener("mouseleave", () => {
     gsap.to(path, {
         attr: { d: finalPath },
-        duration: 0.9,
-        ease: "elastic.out(1,0.3)"
-    })
-})
-
+        duration: 1.1,
+        ease: "elastic.out(1.2, 0.3)"
+    });
+});
 // CUSTOM CURSOR MOVE
 var cursor = document.querySelector("#cursor")
 
